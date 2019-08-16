@@ -1,13 +1,13 @@
-package com.java4all;
+package com.java4all.order;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SeatApplication {
+public class OrderApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SeatApplication.class, args);
+		SpringApplication.run(OrderApplication.class, args);
 	}
 
 }
