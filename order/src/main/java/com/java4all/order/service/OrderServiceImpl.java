@@ -15,7 +15,9 @@ public class OrderServiceImpl implements OrderService{
     private OrderDao orderDao;
 
     /**
-     * create order
+     * 创建订单
+     * @param order
+     * @return
      */
     @Override
     public void create(Order order) {

@@ -8,8 +8,9 @@ import com.java4all.order.entity.Order;
 public interface OrderService {
 
     /**
-     * create order
+     * 创建订单
      * @param order
+     * @return
      */
     void create(Order order);
 }

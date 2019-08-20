@@ -19,6 +19,11 @@ public class OrderController {
     @Autowired
     private OrderService orderServiceImpl;
 
+    /**
+     * 创建订单
+     * @param order
+     * @return
+     */
     @GetMapping("create")
     public String create(Order order){
         orderServiceImpl.create(order);
