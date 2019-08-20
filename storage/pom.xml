@@ -8,7 +8,7 @@
 		<version>2.1.7.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.java4all</groupId>
+	<groupId>com.java4all.storage</groupId>
 	<artifactId>storage</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>storage</name>
