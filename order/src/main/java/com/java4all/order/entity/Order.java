@@ -1,18 +1,24 @@
 package com.java4all.order.entity;
 
-import java.util.Date;
+
+import java.math.BigDecimal;
+import lombok.Data;
 
 /**
  * 订单
  * @author IT云清
  */
+@Data
 public class Order {
 
-    private Integer id;
+    private Long id;
+
+    private Long userId;
+
+    private Long productId;
 
     private Integer count;
 
-    private Date createDate;
+    private BigDecimal money;
 
-    private Date updateDate;
 }

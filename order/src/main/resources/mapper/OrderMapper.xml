@@ -2,24 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.java4all.order.dao.OrderDao" >
   <resultMap id="BaseResultMap" type="com.java4all.order.entity.Order" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <!--<id column="id" property="id" jdbcType="CHAR" />-->
-    <!--<result column="user_id" property="userId" jdbcType="CHAR" />-->
-    <!--<result column="product_id" property="productId" jdbcType="CHAR" />-->
-    <!--<result column="credit_source_id" property="creditSourceId" jdbcType="CHAR" />-->
-    <!--<result column="related_company_name" property="relatedCompanyName" jdbcType="VARCHAR" />-->
-    <!--<result column="money_resource_organization_id" property="moneyResourceOrganizationId" jdbcType="VARCHAR" />-->
-    <!--<result column="money_resource_organization_name" property="moneyResourceOrganizationName" jdbcType="VARCHAR" />-->
-    <!--<result column="credit_total" property="creditTotal" jdbcType="DECIMAL" />-->
-    <!--<result column="credit_used" property="creditUsed" jdbcType="DECIMAL" />-->
-    <!--<result column="credit_residue" property="creditResidue" jdbcType="DECIMAL" />-->
-    <!--<result column="credit_from" property="creditFrom" jdbcType="VARCHAR" />-->
-    <!--<result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />-->
-    <!--<result column="create_user_id" property="createUserId" jdbcType="CHAR" />-->
-    <!--<result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />-->
-    <!--<result column="modified_user_id" property="modifiedUserId" jdbcType="CHAR" />-->
-    <!--<result column="deleted" property="deleted" jdbcType="BIT" />-->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
   </resultMap>
+  <insert id="create">
+    INSERT INTO `order`(id,user_id,product_id,count,money)
+     VALUES (NULL,#{userId},#{productId},#{count},#{money})
+  </insert>
 </mapper>

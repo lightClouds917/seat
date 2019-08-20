@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @author IT云清
  */
 @RestController
-@RequestMapping(value = "orderController")
+@RequestMapping(value = "order")
 public class OrderController {
 
     @Autowired
     private OrderService orderServiceImpl;
 
-    @GetMapping("createOrder")
-    public String createOrder(Order order){
-        orderServiceImpl.createOrder(order);
-        return "success";
+    @GetMapping("create")
+    public String create(Order order){
+        orderServiceImpl.create(order);
+        return "Create order success";
     }
 }
