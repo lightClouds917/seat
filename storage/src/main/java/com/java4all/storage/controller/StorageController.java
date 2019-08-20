@@ -16,11 +16,12 @@ public class StorageController {
     @Autowired
     private StorageService storageServiceImpl;
 
-    @RequestMapping("test")
-    public String test(String count){
-        return "扣减了库存"+count;
-    }
-
+    /**
+     * 扣减库存
+     * @param productId 产品id
+     * @param count 数量
+     * @return
+     */
     @GetMapping("decrease")
     public String decrease(Long productId,Integer count){
         storageServiceImpl.decrease(productId,count);

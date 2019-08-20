@@ -13,6 +13,12 @@ public class StorageServiceImpl implements StorageService{
     @Autowired
     private StorageDao storageDao;
 
+    /**
+     * 扣减库存
+     * @param productId 产品id
+     * @param count 数量
+     * @return
+     */
     @Override
     public void decrease(Long productId, Integer count) {
         storageDao.decrease(productId,count);
