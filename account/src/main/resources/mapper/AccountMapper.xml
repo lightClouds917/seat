@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java4all.account.dao.AccountDao" >
+  <resultMap id="BaseResultMap" type="com.java4all.account.entity.Account" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+  </resultMap>
+  <update id="decrease">
+    UPDATE account SET balance = balance - #{money} where user_id = #{userId};
+  </update>
+</mapper>
