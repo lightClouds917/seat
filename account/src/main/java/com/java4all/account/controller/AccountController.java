@@ -17,11 +17,12 @@ public class AccountController {
     @Autowired
     private AccountService accountServiceImpl;
 
-    @RequestMapping("test")
-    public String test(String count){
-        return "扣减了"+count;
-    }
-
+    /**
+     * 扣减账户余额
+     * @param userId 用户id
+     * @param money 金额
+     * @return
+     */
     @RequestMapping("decrease")
     public String decrease(@RequestParam("userId") Integer userId,@RequestParam("money") BigDecimal money){
         accountServiceImpl.decrease(userId,money);

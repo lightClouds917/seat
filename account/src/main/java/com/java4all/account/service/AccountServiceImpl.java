@@ -14,6 +14,11 @@ public class AccountServiceImpl implements AccountService{
     @Autowired
     private AccountDao accountDao;
 
+    /**
+     * 扣减账户余额
+     * @param userId 用户id
+     * @param money 金额
+     */
     @Override
     public void decrease(Integer userId, BigDecimal money) {
         accountDao.decrease(userId,money);

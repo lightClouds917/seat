@@ -8,5 +8,10 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface AccountDao {
 
+    /**
+     * 扣减账户余额
+     * @param userId 用户id
+     * @param money 金额
+     */
     void decrease(@Param("userId") Integer userId, @Param("money") BigDecimal money);
 }
