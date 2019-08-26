@@ -27,8 +27,10 @@ public class OrderServiceImpl implements OrderService{
      */
     @Override
     public void create(Order order) {
+        //本地方法
         orderDao.create(order);
 
+        //远程方法
         storageApi.decrease(order.getProductId(),order.getCount());
         accountApi.decrease(order.getUserId(),order.getMoney());
     }
