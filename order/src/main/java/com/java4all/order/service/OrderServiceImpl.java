@@ -2,6 +2,7 @@ package com.java4all.order.service;
 
 import com.java4all.order.dao.OrderDao;
 import com.java4all.order.entity.Order;
+import com.java4all.order.feign.AccountApi;
 import com.java4all.order.feign.StorageApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ public class OrderServiceImpl implements OrderService{
     private OrderDao orderDao;
     @Autowired
     private StorageApi storageApi;
+    @Autowired
+    private AccountApi accountApi;
 
     /**
      * 创建订单
@@ -27,5 +30,6 @@ public class OrderServiceImpl implements OrderService{
         orderDao.create(order);
 
         storageApi.decrease(order.getProductId(),order.getCount());
+        accountApi.decrease(order.getUserId(),order.getMoney());
     }
 }
