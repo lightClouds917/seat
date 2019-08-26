@@ -1,7 +1,8 @@
 CREATE TABLE `account` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `user_id` bigint(11) DEFAULT NULL COMMENT '用户id',
-  `balance` decimal(10,0) DEFAULT '0' COMMENT '余额',
+  `total` decimal(10,0) DEFAULT NULL COMMENT '总额度',
+  `used` decimal(10,0) DEFAULT NULL COMMENT '已用余额',
+  `residue` decimal(10,0) DEFAULT '0' COMMENT '剩余可用额度',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
