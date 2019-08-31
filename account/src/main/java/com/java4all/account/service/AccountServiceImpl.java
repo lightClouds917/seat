@@ -20,7 +20,7 @@ public class AccountServiceImpl implements AccountService{
      * @param money 金额
      */
     @Override
-    public void decrease(Integer userId, BigDecimal money) {
+    public void decrease(Long userId, BigDecimal money) {
         accountDao.decrease(userId,money);
     }
 }

@@ -14,6 +14,12 @@ public class Account {
     /**用户id*/
     private Long userId;
 
-    /**余额*/
-    private BigDecimal balance;
+    /**总额度*/
+    private BigDecimal total;
+
+    /**已用额度*/
+    private BigDecimal used;
+
+    /**剩余额度*/
+    private BigDecimal residue;
 }

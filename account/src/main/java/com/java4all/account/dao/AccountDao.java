@@ -13,5 +13,5 @@ public interface AccountDao {
      * @param userId 用户id
      * @param money 金额
      */
-    void decrease(@Param("userId") Integer userId, @Param("money") BigDecimal money);
+    void decrease(@Param("userId") Long userId, @Param("money") BigDecimal money);
 }

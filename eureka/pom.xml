@@ -8,10 +8,10 @@
 		<version>2.1.7.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.java4all.account</groupId>
-	<artifactId>account</artifactId>
+	<groupId>com.java4all</groupId>
+	<artifactId>eureka</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>account</name>
+	<name>eureka</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -21,37 +21,14 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<!--eureka client-->
-		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<!--mybatis-->
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>2.0.0</version>
-		</dependency>
-		<!--mysql-->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.37</version>
-		</dependency>
-		<!--lombok-->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.8</version>
 		</dependency>
 	</dependencies>
 
@@ -66,7 +43,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 
 	<build>
 		<plugins>
