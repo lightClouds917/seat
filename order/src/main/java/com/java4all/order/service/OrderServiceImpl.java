@@ -31,7 +31,6 @@ public class OrderServiceImpl implements OrderService{
      * 2.不添加本地事务：创建订单，扣减库存
      */
     @Override
-//    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
     public void create(Order order) {
         //本地方法
         orderDao.create(order);

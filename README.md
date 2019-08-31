@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 # seat
-=======
 ## seat  branch 1.0
 整合了SpringCloud，order通过feign调用account,storage两个服务,未添加分布式事务。
 ### 正常状态下：
@@ -46,4 +44,3 @@
 
 ### 使用
 根据每个项目下的sql文件，创建数据库启动eureka,和各个项目，访问：http://localhost:8080/order/create?userId=1&productId=1&count=10&money=1000
->>>>>>> 1.0
