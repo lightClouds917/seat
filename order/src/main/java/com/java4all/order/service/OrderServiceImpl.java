@@ -31,6 +31,7 @@ public class OrderServiceImpl implements OrderService{
      * 2.不添加本地事务：创建订单，扣减库存
      */
     @Override
+    //TODO why can not use glo
     public void create(Order order) {
         //本地方法
         orderDao.create(order);
