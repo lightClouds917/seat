@@ -1,5 +1,5 @@
 ## seat  branch 1.0
-整合了SpringCloud，order通过feign调用account,storage两个服务
+整合了SpringCloud，order通过feign调用account,storage两个服务,未添加分布式事务。
 ### 正常状态下：
 ```java
     /**
@@ -37,4 +37,6 @@
         accountApi.decrease(order.getUserId(),order.getMoney());
     }
 ```
-此时，会出现数据不一致；
+问题状态下，此时，会出现数据不一致；
+1.添加本地事务：仅仅扣减库存；
+2.不添加本地事务：创建订单，扣减库存；
