@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService{
      * @return
      */
     @Override
-    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
+//    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
     public void create(Order order) {
         //本地方法
         orderDao.create(order);
