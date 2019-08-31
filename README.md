@@ -40,3 +40,6 @@
 问题状态下，此时，会出现数据不一致；
 1.添加本地事务：仅仅扣减库存；
 2.不添加本地事务：创建订单，扣减库存；
+
+### 使用
+根据每个项目下的sql文件，创建数据库启动eureka,和各个项目，访问：http://localhost:8080/order/create?userId=1&productId=1&count=10&money=1000
