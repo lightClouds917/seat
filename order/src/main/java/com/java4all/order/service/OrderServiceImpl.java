@@ -26,6 +26,9 @@ public class OrderServiceImpl implements OrderService{
      * 创建订单
      * @param order
      * @return
+     * 测试结果：
+     * 1.添加本地事务：仅仅扣减库存
+     * 2.不添加本地事务：创建订单，扣减库存
      */
     @Override
 //    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
