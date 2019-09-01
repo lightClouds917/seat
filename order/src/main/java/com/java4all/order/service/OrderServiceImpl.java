@@ -4,6 +4,7 @@ import com.java4all.order.dao.OrderDao;
 import com.java4all.order.entity.Order;
 import com.java4all.order.feign.AccountApi;
 import com.java4all.order.feign.StorageApi;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -31,7 +32,7 @@ public class OrderServiceImpl implements OrderService{
      * 2.不添加本地事务：创建订单，扣减库存
      */
     @Override
-    //TODO why can not use glo
+    @GlobalTransactional
     public void create(Order order) {
         //本地方法
         orderDao.create(order);
