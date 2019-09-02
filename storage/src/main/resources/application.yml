@@ -3,7 +3,7 @@ eureka:
         serviceUrl:
             defaultZone: http://${eureka.instance.hostname}:8761/eureka/
     instance:
-        hostname: 127.0.0.1
+        hostname: localhost
         prefer-ip-address: true
 logging:
     level:
