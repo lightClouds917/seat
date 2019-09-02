@@ -1,4 +1,4 @@
-package com.java4all.order;
+package com.java4all.account;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import io.seata.rm.datasource.DataSourceProxy;
@@ -28,6 +28,7 @@ public class DataSourceConfiguration {
     public DataSourceProxy dataSource(DataSource druidDataSource){
         return new DataSourceProxy(druidDataSource);
     }
+
 
     @Bean
     public SqlSessionFactory sqlSessionFactory(DataSourceProxy dataSourceProxy)throws Exception{
