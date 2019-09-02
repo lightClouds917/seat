@@ -9,7 +9,7 @@
     <result column="money" property="money" jdbcType="DECIMAL" />
   </resultMap>
   <insert id="create">
-    INSERT INTO `order`(id,user_id,product_id,count,money)
+    INSERT INTO 'order'(id,user_id,product_id,count,money)
      VALUES (NULL,#{userId},#{productId},#{count},#{money})
   </insert>
 </mapper>
