@@ -1,9 +1,11 @@
 package com.java4all.storage.controller;
 
 import com.java4all.storage.service.StorageService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,8 +24,8 @@ public class StorageController {
      * @param count 数量
      * @return
      */
-    @GetMapping("decrease")
-    public String decrease(Long productId,Integer count){
+    @RequestMapping("decrease")
+    public String decrease(@RequestParam("productId") Long productId,@RequestParam("count") Integer count){
         storageServiceImpl.decrease(productId,count);
         return "Decrease storage success";
     }

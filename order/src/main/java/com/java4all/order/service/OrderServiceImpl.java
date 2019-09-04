@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService{
         storageApi.decrease(order.getProductId(),order.getCount());
 
         //模拟远程调用出错，或者直接在account服务decrease方法中来模拟也可以
-        System.out.println(5/0);
+//        System.out.println(5/0);
         //远程方法 扣减账户余额
         accountApi.decrease(order.getUserId(),order.getMoney());
     }
