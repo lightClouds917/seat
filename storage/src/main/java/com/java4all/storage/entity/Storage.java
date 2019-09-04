@@ -21,5 +21,5 @@ public class Storage {
     private Integer used;
 
     /**剩余库存*/
-    private BigDecimal residue;
+    private Integer residue;
 }
