@@ -43,9 +43,9 @@ order服务关键代码如下：
 - 4.seata相关建表语句见下文说明；
 
 ### 4.配置信息修改
-#### 1.seata-server中，/conf目录下，有两个配置文件：
+seata-server中，/conf目录下，有两个配置文件,需要结合自己的情况来修改：
 
-1.file.conf 
+##### 1.file.conf 
 
 里面有事务组配置，锁配置，事务日志存储等相关配置信息，由于此demo使用db存储事务信息，我们这里只修改store中的配置，其他的可以先保持默认值：
 ```java
@@ -93,7 +93,7 @@ store {
 
 由于存储undo_log是在业务库中，所以在每个业务库中，还要创建undo_log表，建表sql在/conf/db_undo_log.sql中。
 
-2.registry.conf
+##### 2.registry.conf
 
 registry{}中是注册中心相关配置，config{}中是配置中心相关配置。
 
