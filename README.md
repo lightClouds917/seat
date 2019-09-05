@@ -1,4 +1,4 @@
-# springcloud-eureka-mybatis-seata
+# springcloud-eureka-feign-mybatis-seata
 ### 1.版本信息
 注册中心：eureka
 
@@ -42,12 +42,12 @@ order服务关键代码如下：
 - 3.执行每个项目下的建表语句，resource下xx.sql文件；
 - 4.seata相关建表语句见下文说明；
 
-### 4.配置信息修改
+### 4.seata server端配置信息修改
 seata-server中，/conf目录下，有两个配置文件,需要结合自己的情况来修改：
 
 ##### 1.file.conf 
 
-里面有事务组配置，锁配置，事务日志存储等相关配置信息，由于此demo使用db存储事务信息，我们这里只修改store中的配置，其他的可以先保持默认值：
+里面有事务组配置，锁配置，事务日志存储等相关配置信息，由于此demo使用db存储事务信息，我们这里要修改store中的配置：
 ```java
 ## transaction log store
 store {
@@ -89,9 +89,28 @@ store {
   }
 }
 ```
+
 由于我们使用db模式存储事务日志，所以，我们要创建三张表：global_table，branch_table，lock_table，建表sql在/conf/db_store.sql中；
 
 由于存储undo_log是在业务库中，所以在每个业务库中，还要创建undo_log表，建表sql在/conf/db_undo_log.sql中。
+
+由于我自定义了事务组名称，所以这里也做了修改：
+```java
+service {
+  #vgroup->rgroup
+  vgroup_mapping.fsp_tx_group = "default"  修改这里，fsp_tx_group这个名称是我自定义的，一定要与client端的这个配置一致！否则会报错！
+  #only support single node
+  default.grouplist = "127.0.0.1:8091"
+  #degrade current not support
+  enableDegrade = false
+  #disable
+  disable = false
+  #unit ms,s,m,h,d represents milliseconds, seconds, minutes, hours, days, default permanent
+  max.commit.retry.timeout = "-1"
+  max.rollback.retry.timeout = "-1"
+}
+```
+其他的可以先使用默认值。
 
 ##### 2.registry.conf
 
@@ -147,12 +166,114 @@ registry {
 ```
 其他的配置可以暂时使用默认值。
 
-如果是在windows下启动seata-server，现在可以直接启动了：执行/bin/seata-server.bat
+如果是在windows下启动seata-server，现在已经完成配置修改了，等eureka启动后，就可以启动seata-server了：执行/bin/seata-server.bat
 
+### 5.client端相关配置
+#### 1.普通配置
+client端的几个服务，都是普通的springboot整合了springCloud组件的正常服务，所以，你需要配置eureka，数据库，mapper扫描等，即使不使用seata，你也需要做，这里不做特殊说明，看代码就好。
 
-问题状态下，此时，会出现数据不一致；
-1.添加本地事务：仅仅扣减库存；
-2.不添加本地事务：创建订单，扣减库存；
+#### 2.特殊配置
+##### 1.application.yml
+以order服务为例，除了常规配置外，这里还要配置下事务组信息：
+```java
+spring:
+    application:
+        name: order-server
+    cloud:
+        alibaba:
+            seata:
+                tx-service-group: fsp_tx_group  这个自定义命令很重要，server，client都要保持一致
+```
+##### 2.file.conf
+自己新建的项目是没有这个配置文件的，copy过来，修改下面配置：
+```java
+service {
+  #vgroup->rgroup
+  vgroup_mapping.fsp_tx_group = "default"  fsp_tx_group  这个自定义命令很重要，server，client都要保持一致
+  #only support single node
+  default.grouplist = "127.0.0.1:8091"
+  #degrade current not support
+  enableDegrade = false
+  #disable
+  disable = false
+  disableGlobalTransaction = false
+}
+```
+##### 3.registry.conf
 
-### 使用
-根据每个项目下的sql文件，创建数据库启动eureka,和各个项目，访问：http://localhost:8080/order/create?userId=1&productId=1&count=10&money=1000
+使用eureka做注册中心，仅需要修改eureka的配置即可：
+```java
+registry {
+  # file 、nacos 、eureka、redis、zk
+  type = "eureka"   修改这里
+
+  nacos {
+    serverAddr = "localhost"
+    namespace = "public"
+    cluster = "default"
+  }
+  eureka {
+    serviceUrl = "http://localhost:8761/eureka"  修改这里
+    application = "default"
+    weight = "1"
+  }
+  redis {
+    serverAddr = "localhost:6381"
+    db = "0"
+  }
+  zk {
+    cluster = "default"
+    serverAddr = "127.0.0.1:2181"
+    session.timeout = 6000
+    connect.timeout = 2000
+  }
+  file {
+    name = "file.conf"
+  }
+}
+```
+其他的使用默认值就好。
+
+#### 3.数据源代理
+这个是要特别注意的地方，seata对数据源做了代理和接管，在每个参与分布式事务的服务中，都要做如下配置：
+```java
+/**
+ * @author wangzhongxiang
+ */
+@Configuration
+public class DataSourceConfiguration {
+
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource druidDataSource(){
+        DruidDataSource druidDataSource = new DruidDataSource();
+        return druidDataSource;
+    }
+
+    @Primary
+    @Bean("dataSource")
+    public DataSourceProxy dataSource(DataSource druidDataSource){
+        return new DataSourceProxy(druidDataSource);
+    }
+
+    @Bean
+    public SqlSessionFactory sqlSessionFactory(DataSourceProxy dataSourceProxy)throws Exception{
+        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        sqlSessionFactoryBean.setDataSource(dataSourceProxy);
+        sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver()
+        .getResources("classpath*:/mapper/*.xml"));
+        sqlSessionFactoryBean.setTransactionFactory(new SpringManagedTransactionFactory());
+        return sqlSessionFactoryBean.getObject();
+    }
+
+}
+```
+
+### 6.尽情把玩
+1.启动eureka;
+2.启动seata-server;
+3.启动order,storage,account服务;
+
+访问：http://localhost:8080/order/create?userId=1&productId=1&count=10&money=100
+
+然后可以模拟正常情况，异常情况，超时情况等，观察数据库即可。
