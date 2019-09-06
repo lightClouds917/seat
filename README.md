@@ -29,10 +29,7 @@ order服务关键代码如下：
         orderDao.create(order);
         //远程方法 扣减库存
         storageApi.decrease(order.getProductId(),order.getCount());
-
-        //模拟远程调用出错，或者直接在account服务decrease方法中来模拟也可以
-        System.out.println(5/0);
-        //远程方法 扣减账户余额
+        //远程方法 扣减账户余额  可在accountServiceImpl中模拟异常
         accountApi.decrease(order.getUserId(),order.getMoney());
     }
 ```
@@ -98,7 +95,7 @@ store {
 ```java
 service {
   #vgroup->rgroup
-  vgroup_mapping.fsp_tx_group = "default"  修改这里，fsp_tx_group这个名称是我自定义的，一定要与client端的这个配置一致！否则会报错！
+  vgroup_mapping.fsp_tx_group = "default"  修改这里，fsp_tx_group这个事务组名称是我自定义的，一定要与client端的这个配置一致！否则会报错！
   #only support single node
   default.grouplist = "127.0.0.1:8091"
   #degrade current not support
@@ -182,14 +179,14 @@ spring:
     cloud:
         alibaba:
             seata:
-                tx-service-group: fsp_tx_group  这个自定义命令很重要，server，client都要保持一致
+                tx-service-group: fsp_tx_group  这个fsp_tx_group自定义命名很重要，server，client都要保持一致
 ```
 ##### 2.file.conf
 自己新建的项目是没有这个配置文件的，copy过来，修改下面配置：
 ```java
 service {
   #vgroup->rgroup
-  vgroup_mapping.fsp_tx_group = "default"  fsp_tx_group  这个自定义命令很重要，server，client都要保持一致
+  vgroup_mapping.fsp_tx_group = "default"   这个fsp_tx_group自定义命名很重要，server，client都要保持一致
   #only support single node
   default.grouplist = "127.0.0.1:8091"
   #degrade current not support
@@ -278,7 +275,7 @@ public class DataSourceConfiguration {
 
 然后可以模拟正常情况，异常情况，超时情况等，观察数据库即可。
 
-#### 7.日志
+### 7.日志
 正常情况：
 ##### 1.order
 ```java
@@ -306,4 +303,24 @@ public class DataSourceConfiguration {
 2019-09-06 15:44:35.545  INFO 36556 --- [atch_RMROLE_3_8] i.s.core.rpc.netty.RmMessageListener     : onMessage:xid=192.168.158.133:8091:2021468859,branchId=2021468867,branchType=AT,resourceId=jdbc:mysql://116.62.62.26/seat-account,applicationData=null
 2019-09-06 15:44:35.545  INFO 36556 --- [atch_RMROLE_3_8] io.seata.rm.AbstractRMHandler            : Branch committing: 192.168.158.133:8091:2021468859 2021468867 jdbc:mysql://116.62.62.26/seat-account null
 2019-09-06 15:44:35.545  INFO 36556 --- [atch_RMROLE_3_8] io.seata.rm.AbstractRMHandler            : Branch commit result: PhaseTwo_Committed
+```
+### 模拟异常
+在AccountServiceImpl中模拟异常情况，然后可以查看日志
+```java
+    /**
+     * 扣减账户余额
+     * @param userId 用户id
+     * @param money 金额
+     */
+    @Override
+    public void decrease(Long userId, BigDecimal money) {
+        LOGGER.info("------->扣减账户开始");
+//        try {
+//            Thread.sleep(30*1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        LOGGER.info("------->扣减账户结束");
+        accountDao.decrease(userId,money);
+    }
 ```
