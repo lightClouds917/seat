@@ -27,6 +27,6 @@ public class StorageServiceImpl implements StorageService{
     public void decrease(Long productId, Integer count) {
         LOGGER.info("------->扣减库存开始");
         storageDao.decrease(productId,count);
-        LOGGER.info("------->扣减库存开始");
+        LOGGER.info("------->扣减库存结束");
     }
 }

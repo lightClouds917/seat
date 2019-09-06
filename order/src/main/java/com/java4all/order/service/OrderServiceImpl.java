@@ -47,6 +47,6 @@ public class OrderServiceImpl implements OrderService{
 
         //远程方法 扣减账户余额
         accountApi.decrease(order.getUserId(),order.getMoney());
-        LOGGER.info("------->交易开始");
+        LOGGER.info("------->交易结束");
     }
 }
