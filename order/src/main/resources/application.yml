@@ -11,7 +11,7 @@ feign:
 logging:
     level:
         io:
-            seata: debug
+            seata: info
 mybatis:
     mapperLocations: classpath:mapper/*.xml
     typeAliasesPackage: com.java4all.order.entity

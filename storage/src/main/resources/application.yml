@@ -8,7 +8,7 @@ eureka:
 logging:
     level:
         io:
-            seata: debug
+            seata:
 mybatis:
     mapperLocations: classpath:mapper/*.xml
     typeAliasesPackage: com.java4all.storage.entity
