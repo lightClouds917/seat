@@ -277,3 +277,33 @@ public class DataSourceConfiguration {
 访问：http://localhost:8080/order/create?userId=1&productId=1&count=10&money=100
 
 然后可以模拟正常情况，异常情况，超时情况等，观察数据库即可。
+
+#### 7.日志
+正常情况：
+##### 1.order
+```java
+2019-09-06 15:44:33.536  INFO 53904 --- [io-8080-exec-10] i.seata.tm.api.DefaultGlobalTransaction  : Begin new global transaction [192.168.158.133:8091:2021468859]
+2019-09-06 15:44:33.536  INFO 53904 --- [io-8080-exec-10] c.j.order.service.OrderServiceImpl       : ------->交易开始
+2019-09-06 15:44:34.376  INFO 53904 --- [io-8080-exec-10] c.j.order.service.OrderServiceImpl       : ------->交易结束
+2019-09-06 15:44:34.593  INFO 53904 --- [io-8080-exec-10] i.seata.tm.api.DefaultGlobalTransaction  : [192.168.158.133:8091:2021468859] commit status:Committed
+2019-09-06 15:44:35.296  INFO 53904 --- [atch_RMROLE_6_8] i.s.core.rpc.netty.RmMessageListener     : onMessage:xid=192.168.158.133:8091:2021468859,branchId=2021468861,branchType=AT,resourceId=jdbc:mysql://116.62.62.26/seat-order,applicationData=null
+2019-09-06 15:44:35.297  INFO 53904 --- [atch_RMROLE_6_8] io.seata.rm.AbstractRMHandler            : Branch committing: 192.168.158.133:8091:2021468859 2021468861 jdbc:mysql://116.62.62.26/seat-order null
+2019-09-06 15:44:35.297  INFO 53904 --- [atch_RMROLE_6_8] io.seata.rm.AbstractRMHandler            : Branch commit result: PhaseTwo_Committed
+```
+##### 2.storage
+```java
+2019-09-06 15:44:33.776  INFO 9704 --- [nio-8082-exec-1] c.j.storage.service.StorageServiceImpl   : ------->扣减库存开始
+2019-09-06 15:44:34.030  INFO 9704 --- [nio-8082-exec-1] c.j.storage.service.StorageServiceImpl   : ------->扣减库存结束
+2019-09-06 15:44:35.422  INFO 9704 --- [atch_RMROLE_5_8] i.s.core.rpc.netty.RmMessageListener     : onMessage:xid=192.168.158.133:8091:2021468859,branchId=2021468864,branchType=AT,resourceId=jdbc:mysql://116.62.62.26/seat-storage,applicationData=null
+2019-09-06 15:44:35.423  INFO 9704 --- [atch_RMROLE_5_8] io.seata.rm.AbstractRMHandler            : Branch committing: 192.168.158.133:8091:2021468859 2021468864 jdbc:mysql://116.62.62.26/seat-storage null
+2019-09-06 15:44:35.423  INFO 9704 --- [atch_RMROLE_5_8] io.seata.rm.AbstractRMHandler            : Branch commit result: PhaseTwo_Committed
+```
+
+##### 3.account
+```java
+2019-09-06 15:44:34.039  INFO 36556 --- [nio-8081-exec-5] c.j.account.service.AccountServiceImpl   : ------->扣减账户开始
+2019-09-06 15:44:34.039  INFO 36556 --- [nio-8081-exec-5] c.j.account.service.AccountServiceImpl   : ------->扣减账户结束
+2019-09-06 15:44:35.545  INFO 36556 --- [atch_RMROLE_3_8] i.s.core.rpc.netty.RmMessageListener     : onMessage:xid=192.168.158.133:8091:2021468859,branchId=2021468867,branchType=AT,resourceId=jdbc:mysql://116.62.62.26/seat-account,applicationData=null
+2019-09-06 15:44:35.545  INFO 36556 --- [atch_RMROLE_3_8] io.seata.rm.AbstractRMHandler            : Branch committing: 192.168.158.133:8091:2021468859 2021468867 jdbc:mysql://116.62.62.26/seat-account null
+2019-09-06 15:44:35.545  INFO 36556 --- [atch_RMROLE_3_8] io.seata.rm.AbstractRMHandler            : Branch commit result: PhaseTwo_Committed
+```
