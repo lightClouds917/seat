@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService{
      * 2.不添加本地事务：创建订单，扣减库存
      */
     @Override
-    @GlobalTransactional
+    @GlobalTransactional(name = "fsp-create-order",rollbackFor = Exception.class)
     public void create(Order order) {
         LOGGER.info("------->交易开始");
         //本地方法
@@ -46,7 +46,11 @@ public class OrderServiceImpl implements OrderService{
         storageApi.decrease(order.getProductId(),order.getCount());
 
         //远程方法 扣减账户余额
+
+        LOGGER.info("------->扣减账户开始order中");
         accountApi.decrease(order.getUserId(),order.getMoney());
+        LOGGER.info("------->扣减账户结束order中");
+
         LOGGER.info("------->交易结束");
     }
 }

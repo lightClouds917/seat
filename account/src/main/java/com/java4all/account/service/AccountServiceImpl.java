@@ -25,13 +25,13 @@ public class AccountServiceImpl implements AccountService{
      */
     @Override
     public void decrease(Long userId, BigDecimal money) {
-        LOGGER.info("------->扣减账户开始");
+        LOGGER.info("------->扣减账户开始account中");
 //        try {
 //            Thread.sleep(30*1000);
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        LOGGER.info("------->扣减账户结束");
         accountDao.decrease(userId,money);
+        LOGGER.info("------->扣减账户结束account中");
     }
 }
