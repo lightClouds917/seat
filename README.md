@@ -1,4 +1,5 @@
 # springcloud-eureka-feign-mybatis-seata
+整合seata的demo,此demo都配置好了，拉下来按照步骤，直接可以跑起来的测试。
 ### 1.版本信息
 注册中心：eureka
 
@@ -23,7 +24,7 @@ demo分为四个项目，单独启动。
 order服务关键代码如下：
 ```java
     @Override
-    @GlobalTransactional
+    @GlobalTransactional(name = "fsp-create-order",rollbackFor = Exception.class) //此注解开启全局事务
     public void create(Order order) {
         //本地方法 创建订单
         orderDao.create(order);
@@ -34,8 +35,8 @@ order服务关键代码如下：
     }
 ```
 ### 3.使用步骤
-- 1.拉取demo代码 git clone xxxx;
-- 2.下载seata server,https://github.com/seata/seata/releases;
+- 1.拉取本demo代码 git clone xxxx;
+- 2.下载seata server,https://github.com/seata/seata/releases，本demo为0.8.0版本;
 - 3.执行每个项目下的建表语句，resource下xx.sql文件；
 - 4.seata相关建表语句见下文说明；
 
@@ -49,9 +50,9 @@ seata-server中，/conf目录下，有两个配置文件,需要结合自己的�
 ## transaction log store
 store {
   ## store mode: file、db
-  mode = "db"   修改这里
+  mode = "db"   修改这里，表明事务信息用db存储
 
-  ## file store
+  ## file store 当mode=db时，此部分配置就不生效了，这是mode=file的配置
   file {
     dir = "sessionStore"
 
@@ -67,7 +68,7 @@ store {
     flush-disk-mode = async
   }
 
-  ## database store
+  ## database store  mode=db时，事务日志存储会存储在这个配置的数据库里
   db {
     ## the implement of javax.sql.DataSource, such as DruidDataSource(druid)/BasicDataSource(dbcp) etc.
     datasource = "dbcp"
@@ -87,7 +88,7 @@ store {
 }
 ```
 
-由于我们使用db模式存储事务日志，所以，我们要创建三张表：global_table，branch_table，lock_table，建表sql在/conf/db_store.sql中；
+由于此demo我们使用db模式存储事务日志，所以，我们要创建三张表：global_table，branch_table，lock_table，建表sql在上面下载的seata-server的/conf/db_store.sql中；
 
 由于存储undo_log是在业务库中，所以在每个业务库中，还要创建undo_log表，建表sql在/conf/db_undo_log.sql中。
 
@@ -111,13 +112,13 @@ service {
 
 ##### 2.registry.conf
 
-registry{}中是注册中心相关配置，config{}中是配置中心相关配置。
+registry{}中是注册中心相关配置，config{}中是配置中心相关配置。seata中，注册中心和配置中心是分开实现的，是两个东西。
 
 我们这里用eureka作注册中心，所以，只用修改registry{}中的：
 ```java
 registry {
   # file 、nacos 、eureka、redis、zk、consul、etcd3、sofa
-  type = "eureka"  修改这里
+  type = "eureka"  修改这里，指明注册中心使用什么
 
   nacos {
     serverAddr = "localhost"
@@ -161,9 +162,9 @@ registry {
   }
 }
 ```
-其他的配置可以暂时使用默认值。
+配置中心，demo里暂时不用，可以不管，其他的配置可以暂时使用默认值。
 
-如果是在windows下启动seata-server，现在已经完成配置修改了，等eureka启动后，就可以启动seata-server了：执行/bin/seata-server.bat
+如果是在windows下启动seata-server，现在已经完成配置修改了，等eureka启动后，就可以启动seata-server了：执行/bin/seata-server.bat即可。
 
 ### 5.client端相关配置
 #### 1.普通配置
@@ -235,6 +236,7 @@ registry {
 这个是要特别注意的地方，seata对数据源做了代理和接管，在每个参与分布式事务的服务中，都要做如下配置：
 ```java
 /**
+ * 数据源代理
  * @author wangzhongxiang
  */
 @Configuration
@@ -274,6 +276,8 @@ public class DataSourceConfiguration {
 访问：http://localhost:8080/order/create?userId=1&productId=1&count=10&money=100
 
 然后可以模拟正常情况，异常情况，超时情况等，观察数据库即可。
+
+这个demo,未做各种优化，如果压测，需要修改和优化一些配置，压测出错了，不一定是seata的锅，自己先排查，再去群里问问。
 
 ### 7.日志
 正常情况：
