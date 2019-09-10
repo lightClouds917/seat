@@ -328,3 +328,6 @@ public class DataSourceConfiguration {
         accountDao.decrease(userId,money);
     }
 ```
+
+其他：
+1.不能通过genkeys获取插入自增id，切换SELECT LAST_INSERT_ID()获取
