@@ -1,11 +1,20 @@
 # springcloud-eureka-feign-mybatis-seata
-整合seata的demo,此demo都配置好了，拉下来按照步骤，直接可以跑起来的测试。
+### 概览
+##### 1.整合seata的demo,此demo都配置好了，拉下来按照步骤，直接可以跑起来观察效果。
+
+##### 2.自己项目整合，主要步骤如下：
+- 下载，seata-server,修改server配置
+- client端（你自己的项目），引入配置文件，修改配置文件(注意不要遗漏，可参考下方步骤)
+- 数据源代理设置
+- 创建数据库表
+- 启动注册中心，启动server,启动client
+
 ### 1.版本信息
 注册中心：eureka
 
 持久层：mybatis
 
-Springboot：2.1.7.RELEASE
+Springboot:2.1.7.RELEASE
 
 Springcloud:Greenwich.SR2
 
@@ -328,6 +337,3 @@ public class DataSourceConfiguration {
         accountDao.decrease(userId,money);
     }
 ```
-
-其他：
-1.不能通过genkeys获取插入自增id，切换SELECT LAST_INSERT_ID()获取
