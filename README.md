@@ -10,7 +10,10 @@
 - 5.启动注册中心，启动server,启动client
 
 ### 1.此demo技术选型及版本信息
+
 注册中心：eureka
+
+服务间调用：feign
 
 持久层：mybatis 
 
