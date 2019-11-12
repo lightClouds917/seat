@@ -1,4 +1,5 @@
 # springcloud-eureka-feign-mybatis-seata
+#### 此demo已经贡献到seata官方sample中，更新优先于此项目，官方sample地址为：https://github.com/seata/seata-samples/tree/master/springcloud-eureka-feign-mybatis-seata
 ### 概览
 ##### 1.整合seata的demo,此demo都配置好了，拉下来按照步骤，直接可以跑起来观察效果。
 
